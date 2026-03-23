@@ -1,0 +1,9 @@
+{
+  "wordBank": [
+    {"base": "swim", "past": "swam", "future": "will swim", "difficulty": "medium"},
+    {"base": "catch", "past": "caught", "future": "will catch", "difficulty": "hard"},
+    {"base": "run", "past": "ran", "future": "will run", "difficulty": "easy"},
+    {"base": "eat", "past": "ate", "future": "will eat", "difficulty": "medium"},
+    {"base": "draw", "past": "drew", "future": "will draw", "difficulty": "hard"}
+  ]
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentacle Tenses</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
+</head>
+<body>
+
+    <!--login page-->
+    <div id="login-page" class="screen">
+        <div class="card">
+            <h1 class="primary-text">Tentacle Tenses</h1>
+            <p>Type a nickname and pick 3 emojis!</p>
+            <!-- emojis -->
+            <input type="text" id="nickname-input" placeholder="Your name..." maxlength="12">
+            <div id="emoji-grid" class="emoji-grid">
+            </div>
+            <div class="pin-display">
+                Pin: <span id="pin-dots">_ _ _</span>
+            </div>
+
+            <button id="login-btn" class="main-button">Let's Play!</button>
+        </div>
+    </div>
+
+    <!-- mode selection page -->
+    <div id="mode-page" class="screen" style="display:none;">
+        <div class="card">
+            <h2 class="primary-text">Choose your Mission</h2>
+            <button class="mode-btn" onclick="goToDifficulty('spelling')">Spelling Mode</button>
+            <button class="mode-btn" onclick="goToDifficulty('tenses')">Tense Mode</button>
+        </div>
+    </div>
+
+    <!-- difficulty page -->
+    <div id="difficulty-page" class="screen" style="display:none;">
+        <div class="card">
+            <h2 class="primary-text">Select your Speed</h2>
+            <p>How fast can you shoot?</p>
+            
+            <button class="diff-btn easy" onclick="launchGame(40)">Easy (Slow)</button>
+            <button class="diff-btn medium" onclick="launchGame(80)">Medium (Normal)</button>
+            <button class="diff-btn hard" onclick="launchGame(130)">Hard (Fast!)</button>
+            
+            <span class="link-text" onclick="navigateTo('mode-page')">Back to Modes</span>
+        </div>
+    </div>
+
+    <!-- game container -->
+    <div id="game-container" style="display:none;"></div>
+
+    <script src="game.js"></script>
+</body>
+</html>
