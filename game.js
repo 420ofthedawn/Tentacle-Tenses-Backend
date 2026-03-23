@@ -11,6 +11,22 @@ let currentLetterIndex = 0;
 let timeLeft = 60;
 let timerEvent;
 let isGameOver = false;
+let wordList = [
+    { 
+        base: "run", past: "ran", future: "will run",
+        sentence: "Yesterday, I ___ to the park." // ___ is the target tense
+    },
+    { 
+        base: "swim", past: "swam", future: "will swim",
+        sentence: "In summer, the fish ___ in the sea."
+    },
+    { 
+        base: "catch", past: "caught", future: "will catch",
+        sentence: "Tomorrow, he ___ a big fish!"
+    }
+];
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const grid = document.getElementById('emoji-grid');
@@ -126,7 +142,7 @@ function create() {
 
     // HUD 
     this.scoreText = this.add.text(20, 20, 'Score: 0', { fontSize: '28px', fill: '#4ade80', fontStyle: 'bold', stroke: '#000', strokeThickness: 3});
-    this.promptText = this.add.text(400, 40, '', { fontSize: '32px', fill: '#fff', fontStyle: 'bold', stroke: '#0000', strokeThickness: 5}).setOrigin(0.5);
+    this.promptText = this.add.text(400, 100, '', { fontSize: '26px', fill: '#000000', fontStyle: 'bold', stroke: '#0000', strokeThickness: 5}).setOrigin(0.5);
 
     // collision logic
     this.physics.add.overlap(this.bullets, this.targets, (bullet, target) => {
@@ -190,24 +206,46 @@ function update() {
 // game funtions
 function handleHit(scene, target, isCorrect) {
     if (isCorrect) {
+        
         score += 10;
         scene.scoreText.setText(`Score: ${score}`);
-        
+
+        scene.player.setTint(0x4ade80);
+        scene.time.delayedCall(200, () => scene.player.clearTint());
+
         if (selectedMode === 'spelling') {
             currentLetterIndex++;
-            if (currentLetterIndex >= targetData.base.length) scene.nextRound();
+           
+            if (currentLetterIndex >= targetData.base.length) {
+                clearRemainingBubbles(scene); 
+                scene.nextRound(); 
+            }
         } else {
+ 
+            clearRemainingBubbles(scene);
             scene.nextRound();
         }
+        
+
         updateDifficulty(true);
+        
     } else {
+        
         updateDifficulty(false);
-        target.setAlpha(0.2); 
+        target.setAlpha(0.2);
     }
+    
+    // always destroy the bullet and the specific bubble hit
     target.destroy();
 }
 
+function clearRemainingBubbles(scene) {
+    scene.targets.clear(true, true); // removes all existing bubbles instantly
+}
+
 function spawnObject(scene) {
+    if (isGameOver) return;
+
     let x = Phaser.Math.Between(100, 700);
     let target = scene.targets.create(x, -50, 'target-bubble');
     target.setVelocityY(currentSpeed);
@@ -219,12 +257,13 @@ function spawnObject(scene) {
         val = isCorrect ? targetData.base[currentLetterIndex].toUpperCase() : "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Phaser.Math.Between(0,25)];
     } else {
         let options = [targetData.past, targetData.base, targetData.future];
-        val = Phaser.Utils.Array.GetRandom(options).toUpperCase();
-        isCorrect = (val === targetData.past.toUpperCase());
+        val = Phaser.Utils.Array.GetRandom(options);
+        isCorrect = (val === targetData.past);
     }
 
     target.setData('correct', isCorrect);
-    let label = scene.add.text(x, -50, val, { fontSize: '28px', color: '#ffffff', fontStyle: 'bold', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5);
+    let label = scene.add.text(x, -50, val, { 
+        fontSize: '22px', color: '#ffffff', fontStyle: 'bold', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5);
     
     // update position
     scene.events.on('update', () => {
@@ -234,11 +273,17 @@ function spawnObject(scene) {
 }
 
 Phaser.Scene.prototype.nextRound = function() {
-    targetData = Phaser.Utils.Array.GetRandom(this.wordList);
     currentLetterIndex = 0;
-    let task = (selectedMode === 'spelling') ? `SPELL: ${targetData.base.toUpperCase()}` : `SHOOT PAST TENSE: ${targetData.base.toUpperCase()}`;
+    targetData = Phaser.Utils.Array.GetRandom(wordList);
+    
+    let task = (selectedMode === 'spelling') ? 
+        `SPELL: ${targetData.base.toUpperCase()}` : 
+        targetData.sentence;
+    
     this.promptText.setText(task);
+    console.log("State Updated: Moving to next question.");
 };
+
 
 function updateDifficulty(isCorrect) {
     lastTenResults.push(isCorrect);
