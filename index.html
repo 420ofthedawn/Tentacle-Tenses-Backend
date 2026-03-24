@@ -10,48 +10,69 @@
 <body>
     <div id="master-viewport">
 
+    <!-- start page-->
+        <div id="start-page" class="screen">
+            <div class="hero-container">
+                <img src="octopus.png" id="inky-mascot" alt="Inky the Octopus">
+                <h1 class="logo-text">Tentacle <br>Tenses</h1>
+                <button class="start-btn" onclick="navigateTo('login-page')">START MISSION</button>
+            </div>
+        </div>
+
     <!--login page-->
-    <div id="login-page" class="screen">
-        <div class="card">
-            <h1 class="primary-text">Tentacle Tenses</h1>
-            <p>Type a nickname and pick 3 emojis!</p>
-            <!-- emojis -->
-            <input type="text" id="nickname-input" placeholder="Your name..." maxlength="12">
-            <div id="emoji-grid" class="emoji-grid">
+        <div id="login-page" class="screen" style="display:none;">
+            <div class="card">
+                <h1 class="primary-text">Tentacle Tenses</h1>
+                <p>Type a nickname and pick 3 emojis!</p>
+                <!-- emojis -->
+                <input type="text" id="nickname-input" placeholder="Your name..." maxlength="12">
+                <div id="emoji-grid" class="emoji-grid">
+                </div>
+                <div class="pin-display">
+                    Pin: <span id="pin-dots">_ _ _</span>
+                </div>
+
+                <button id="login-btn" class="main-button">Let's Play!</button>
             </div>
-            <div class="pin-display">
-                Pin: <span id="pin-dots">_ _ _</span>
+        </div>
+
+        <!-- mode selection page -->
+        <div id="mode-page" class="screen" style="display:none;">
+            <div class="card">
+                <h2 class="primary-text">Choose your Mission</h2>
+                <button class="mode-btn" onclick="goToDifficulty('spelling')">Spelling Mode</button>
+                <button class="mode-btn" onclick="goToDifficulty('tenses')">Tense Mode</button>
             </div>
-
-            <button id="login-btn" class="main-button">Let's Play!</button>
         </div>
-    </div>
 
-    <!-- mode selection page -->
-    <div id="mode-page" class="screen" style="display:none;">
-        <div class="card">
-            <h2 class="primary-text">Choose your Mission</h2>
-            <button class="mode-btn" onclick="goToDifficulty('spelling')">Spelling Mode</button>
-            <button class="mode-btn" onclick="goToDifficulty('tenses')">Tense Mode</button>
+        <!-- difficulty page -->
+        <div id="difficulty-page" class="screen" style="display:none;">
+            <div class="card">
+                <h2 class="primary-text">Select your Speed</h2>
+                <p>How fast can you shoot?</p>
+                
+                <button class="diff-btn easy" onclick="launchGame(40)">Easy (Slow)</button>
+                <button class="diff-btn medium" onclick="launchGame(80)">Medium (Normal)</button>
+                <button class="diff-btn hard" onclick="launchGame(130)">Hard (Fast!)</button>
+                
+                <span class="link-text" onclick="navigateTo('mode-page')">Back to Modes</span>
+            </div>
         </div>
-    </div>
 
-    <!-- difficulty page -->
-    <div id="difficulty-page" class="screen" style="display:none;">
-        <div class="card">
-            <h2 class="primary-text">Select your Speed</h2>
-            <p>How fast can you shoot?</p>
-            
-            <button class="diff-btn easy" onclick="launchGame(40)">Easy (Slow)</button>
-            <button class="diff-btn medium" onclick="launchGame(80)">Medium (Normal)</button>
-            <button class="diff-btn hard" onclick="launchGame(130)">Hard (Fast!)</button>
-            
-            <span class="link-text" onclick="navigateTo('mode-page')">Back to Modes</span>
+        <!-- end game navigation -->
+        <div id="next-action-page" class="screen" style="display:none;">
+            <div class="card wide-card">
+                <h2 class="primary-text">Mission Results</h2>
+                <div class="nav-button-container">
+                    <button class="action-btn" onclick="restartLevel()">NEXT LEVEL</button>
+                    <button class="action-btn" onclick="goToStart()">MAIN MENU</button>
+                    <button class="action-btn" onclick="navigateTo('mode-page')">CHANGE MODE</button>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- game container -->
-    <div id="game-container"></div>
+        <!-- game container -->
+        <div id="game-container"></div>
     </div>
 
     <script src="game.js"></script>
